@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { destroy, store } from '@/actions/App/Http/Controllers/RsvpController';
+import { destroy, store } from '@/routes/events/rsvp';
 import type { Event } from '@/types';
 
 interface Props {

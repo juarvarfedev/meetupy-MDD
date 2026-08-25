@@ -1,17 +1,28 @@
-import { Head } from '@inertiajs/react';
-// import { index, show } from '@/routes/events';
+import { Head, Link } from '@inertiajs/react';
+import RsvpButton from '@/components/rsvp-button';
+import { index, edit, show } from '@/routes/events';
 import type { Event } from '@/types';
 
 interface Props {
     event: Event;
+    canEdit: boolean;
+    isRsvped: boolean;
+    attendeesCount: number;
 }
 
-export default function EventShow({ event }: Props) {
+export default function EventShow({
+    event,
+    canEdit,
+    isRsvped,
+    attendeesCount,
+}: Props) {
     return (
         <>
             <Head title={event.title} />
 
-            <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
+            {canEdit && <Link href={edit.url(event)}>Edit Event</Link>}
+
+            <div className="mt-4 rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
                 <h1 className="text-2xl font-semibold">{event.title}</h1>
 
                 {event.meetup_group && (
@@ -40,6 +51,13 @@ export default function EventShow({ event }: Props) {
                 {event.description && (
                     <p className="mt-4 text-sm">{event.description}</p>
                 )}
+
+                <p className="my-4">
+                    {attendeesCount}{' '}
+                    {attendeesCount === 1 ? ' attendee' : ' attendees'}
+                </p>
+
+                <RsvpButton event={event} isRsvped={isRsvped} />
             </div>
         </>
     );
