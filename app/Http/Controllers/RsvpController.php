@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendRsvpEmail;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,6 +12,9 @@ class RsvpController extends Controller
     public function store(Event $event): RedirectResponse
     {
         $event->users()->syncWithoutDetaching([auth()->id()]);
+
+        SendRsvpEmail::dispatch(auth()->user(), $event);
+
         return back();
     }
 
