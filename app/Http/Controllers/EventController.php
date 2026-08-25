@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Event;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
     public function index()
     {
-        return 'These are our events!';
+        $events = Event::query()
+            ->with(['meetupGroup.user'])
+            ->where('starts_at', '>=', now())
+            ->orderBy('starts_at')
+            ->get();
+
+        return Inertia::render('events/index', [
+            'events' => $events,
+        ]);
     }
 }
